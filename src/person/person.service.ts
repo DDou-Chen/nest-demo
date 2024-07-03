@@ -8,6 +8,10 @@ export class PersonService {
     return 'This action adds a new person';
   }
 
+  xxx() {
+    return 'xxx';
+  }
+
   findAll() {
     return `This action returns all person`;
   }
