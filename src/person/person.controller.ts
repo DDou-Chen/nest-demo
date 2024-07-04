@@ -9,6 +9,8 @@ import {
   Query,
   UseInterceptors,
   UploadedFiles,
+  OnModuleInit,
+  OnApplicationBootstrap,
 } from '@nestjs/common';
 import { PersonService } from './person.service';
 import { CreatePersonDto } from './dto/create-person.dto';
@@ -16,8 +18,18 @@ import { UpdatePersonDto } from './dto/update-person.dto';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('api/person')
-export class PersonController {
+export class PersonController implements OnModuleInit, OnApplicationBootstrap {
   constructor(private readonly personService: PersonService) {}
+
+  // 初始化模块
+  onModuleInit() {
+    console.log('person controller onModuleInit');
+  }
+
+  // 初始化完成
+  onApplicationBootstrap() {
+    console.log('person controller onApplicationBootstrap');
+  }
 
   // @Post()
   // create(@Body() createPersonDto: CreatePersonDto) {

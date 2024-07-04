@@ -1,9 +1,37 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BeforeApplicationShutdown,
+  Injectable,
+  OnApplicationBootstrap,
+  OnModuleDestroy,
+  OnModuleInit,
+} from '@nestjs/common';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
 
 @Injectable()
-export class PersonService {
+export class PersonService
+  implements
+    OnModuleInit,
+    OnApplicationBootstrap,
+    OnModuleDestroy,
+    BeforeApplicationShutdown
+{
+  onModuleInit() {
+    console.log('person service onModuleInit');
+  }
+
+  onApplicationBootstrap() {
+    console.log('person service onApplicationBootstrap');
+  }
+
+  onModuleDestroy() {
+    console.log('person service OnModuleDestroy');
+  }
+
+  beforeApplicationShutdown(signal?: string) {
+    console.log('person service beforeApplicationShutdown', signal);
+  }
+
   create(createPersonDto: CreatePersonDto) {
     return 'This action adds a new person';
   }

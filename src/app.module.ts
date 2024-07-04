@@ -3,9 +3,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PersonModule } from './person/person.module';
 import { PersonService } from './person/person.service';
+import { GlobalAModule } from './global-a/global-a.module';
 
 @Module({
-  imports: [PersonModule],
+  imports: [PersonModule, GlobalAModule],
   controllers: [AppController],
   providers: [
     { provide: 'app_service', useClass: AppService },
