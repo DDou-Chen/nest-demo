@@ -67,6 +67,7 @@ export class PersonController implements OnModuleInit, OnApplicationBootstrap {
 
   @Get(':id')
   urlParam(@Param('id') id: string) {
+    console.log('find====');
     return `received: id=${id}`;
   }
 
