@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { NextFunction, Request, Response } from 'express';
 import { LoginGuard } from './login.guard';
+import { TimeInterceptor } from './time.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -17,6 +18,9 @@ async function bootstrap() {
 
   // 全局路由守卫
   // app.useGlobalGuards(new LoginGuard());
+
+  // 全局拦截
+  app.useGlobalInterceptors(new TimeInterceptor());
 
   await app.listen(3000);
 

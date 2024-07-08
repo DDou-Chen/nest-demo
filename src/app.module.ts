@@ -5,17 +5,22 @@ import { PersonModule } from './person/person.module';
 import { PersonService } from './person/person.service';
 import { GlobalAModule } from './global-a/global-a.module';
 import { LogMiddleware } from './log.middleware';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { LoginGuard } from './login.guard';
+import { TimeInterceptor } from './time.interceptor';
 
 @Module({
   imports: [PersonModule, GlobalAModule],
   controllers: [AppController],
   providers: [
     { provide: AppService, useClass: AppService },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: LoginGuard,
+    // },
     {
-      provide: APP_GUARD,
-      useClass: LoginGuard,
+      provide: APP_INTERCEPTOR,
+      useClass: TimeInterceptor,
     },
     {
       provide: 'person',
