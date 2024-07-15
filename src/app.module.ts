@@ -18,10 +18,10 @@ import { TimeInterceptor } from './time.interceptor';
     //   provide: APP_GUARD,
     //   useClass: LoginGuard,
     // },
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: TimeInterceptor,
-    },
+    // {
+    //   provide: APP_INTERCEPTOR,
+    //   useClass: TimeInterceptor,
+    // },
     {
       provide: 'person',
       useValue: {
@@ -62,6 +62,7 @@ import { TimeInterceptor } from './time.interceptor';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
+    // aaa/*路由触发
     consumer.apply(LogMiddleware).forRoutes('aaa*');
   }
 }
