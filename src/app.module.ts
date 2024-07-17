@@ -8,9 +8,17 @@ import { LogMiddleware } from './log.middleware';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { LoginGuard } from './login.guard';
 import { TimeInterceptor } from './time.interceptor';
+import { DynamicModuleModule } from './dynamic-module/dynamic-module.module';
 
 @Module({
-  imports: [PersonModule, GlobalAModule],
+  imports: [
+    PersonModule,
+    GlobalAModule,
+    DynamicModuleModule.register({
+      test: 'test',
+      name: 'ddou',
+    }),
+  ],
   controllers: [AppController],
   providers: [
     { provide: AppService, useClass: AppService },
