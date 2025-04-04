@@ -1,0 +1,9 @@
+# docker build 时，会先解析 .dockerignore，把该忽略的文件忽略掉，然后把剩余文件打包发送给 docker daemon 作为上下文来构建产生镜像。
+# 忽略的文件，声明哪些不需要发送给 docker daemon
+
+*.md
+node_modules/
+.git/
+.DS_Store
+.vscode/
+.dockerignore
