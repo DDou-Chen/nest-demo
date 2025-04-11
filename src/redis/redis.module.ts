@@ -11,7 +11,8 @@ import { createClient } from 'redis';
       async useFactory() {
         const client = createClient({
           socket: {
-            host: '172.27.0.1',
+            // host: '172.27.0.1',
+            host: 'redis-container',
             port: 6379,
           },
         });

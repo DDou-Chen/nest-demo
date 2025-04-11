@@ -1,0 +1,33 @@
+
+# version 是指定 docker-compose.yml 的版本，因为不同版本配置不同。
+version: '3.8'
+services:
+  nest-app:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    depends_on:
+      - mysql-container
+      - redis-container
+    ports:
+      - '3000:3000'
+    networks:
+      - common-network
+  mysql-container:
+    image: mysql
+    volumes:
+      - D:\Volumes\mysql-test:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: acl_test
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - common-network # 指定桥接网络为 common-network
+  redis-container:
+    image: redis
+    volumes:
+      - D:\Volumes\redis-test:/data
+    networks:
+      - common-network
+networks:
+  common-network:
+    driver: bridge
