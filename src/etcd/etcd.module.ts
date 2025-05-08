@@ -1,0 +1,82 @@
+import { DynamicModule, Global, Module } from '@nestjs/common';
+import { EtcdService } from './etcd.service';
+import { Etcd3, IOptions } from 'etcd3';
+
+export const ETCD_CLIENT_TOKEN = 'ETCD_CLIENT';
+
+export const ETCD_CLIENT_OPTIONS_TOKEN = 'ETCD_CLIENT_OPTIONS';
+
+export interface EtcdModuleAsyncOptions {
+  useFactory?: (...args: any[]) => Promise<IOptions> | IOptions;
+  inject?: any[];
+}
+
+@Module({
+  // 改成动态模块了
+  // providers: [
+  //   EtcdService,
+  //   {
+  //     provide: 'ETCD_CLIENT',
+  //     useFactory() {
+  //       const client = new Etcd3({
+  //         hosts: 'http://localhost:2379',
+  //         auth: {
+  //           username: 'root',
+  //           password: 'root',
+  //         },
+  //       });
+  //       return client;
+  //     },
+  //   },
+  // ],
+  // exports: [EtcdService],
+})
+export class EtcdModule {
+  static forRoot(options?: IOptions): DynamicModule {
+    return {
+      module: EtcdModule,
+      providers: [
+        EtcdService,
+        // 创建 etcd client 作为一个 provider
+        {
+          provide: ETCD_CLIENT_TOKEN,
+          useFactory(options: IOptions) {
+            const client = new Etcd3(options);
+            return client;
+          },
+          inject: [ETCD_CLIENT_OPTIONS_TOKEN],
+        },
+        // 把传入的 options 作为一个 provider
+        {
+          provide: ETCD_CLIENT_OPTIONS_TOKEN,
+          useValue: options,
+        },
+      ],
+      exports: [EtcdService],
+    };
+  }
+
+  static forRootAsync(options: EtcdModuleAsyncOptions): DynamicModule {
+    return {
+      module: EtcdModule,
+      providers: [
+        EtcdService,
+        {
+          provide: ETCD_CLIENT_TOKEN,
+          useFactory(options: IOptions) {
+            const client = new Etcd3(options);
+            return client;
+          },
+          inject: [ETCD_CLIENT_OPTIONS_TOKEN],
+        },
+        //  options 的 provider 是通过 useFactory 的方式创建的
+        {
+          provide: ETCD_CLIENT_OPTIONS_TOKEN,
+          useFactory: options.useFactory,
+          inject: options.inject || [],
+        },
+      ],
+      exports: [EtcdService],
+    };
+  }
+}
